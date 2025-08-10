@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Validex Color Palettes</title>
+  <style>
+    :root{
+      --bg: #0B0F14;
+      --card: #0F1420;
+      --card2:#0E1117;
+      --text:#E6EBF2;
+      --muted:#9AA3AF;
+      --ring:#2A303B;
+      --accent:#FF6A00;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font: 14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 800px at 20% -10%, #111624 0%, var(--bg) 40%), var(--bg);
+      color: var(--text);
+    }
+    header{
+      max-width: 1200px;
+      margin: 24px auto 8px;
+      padding: 0 16px;
+      display:flex;
+      align-items:end;
+      justify-content:space-between;
+      gap:16px;
+    }
+    h1{font-size:20px;margin:0}
+    .hint{color:var(--muted);font-size:12px}
+
+    .grid{
+      max-width: 1200px;
+      margin: 0 auto 64px;
+      padding: 8px 16px 32px;
+      display:grid;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+      gap: 16px;
+    }
+    @media (min-width: 640px){.grid{grid-template-columns: repeat(2, minmax(0, 1fr));}}
+    @media (min-width: 900px){.grid{grid-template-columns: repeat(3, minmax(0, 1fr));}}
+    @media (min-width: 1200px){.grid{grid-template-columns: repeat(5, minmax(0, 1fr));}}
+
+    .card{
+      background: linear-gradient(180deg, var(--card) 0%, var(--card2) 100%);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      overflow:hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .card:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.45);
+      border-color: rgba(255,255,255,0.12);
+    }
+
+    .swatch{
+      position: relative;
+      display: flex;
+      width: 100%;
+      aspect-ratio: 1 / 1; /* perfect square */
+      overflow: hidden;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .strip{flex:1}
+
+    .copyBtn{
+      position:absolute; right:8px; top:8px;
+      border:1px solid rgba(255,255,255,0.2);
+      background: rgba(10,14,20,0.6);
+      backdrop-filter: blur(6px);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      display:flex; align-items:center; gap:6px;
+      transition: background .15s ease, border-color .15s ease, transform .05s ease;
+    }
+    .copyBtn:hover{background: rgba(10,14,20,0.8); border-color: rgba(255,255,255,0.28)}
+    .copyBtn:active{transform: scale(0.98)}
+
+    .meta{padding: 10px 12px 12px}
+    .name{font-size: 13px; font-weight: 650; margin: 0 0 4px}
+    .tags{font-size: 12px; color: var(--muted)}
+    .hexRow{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size: 12px; color: #C8CFDA; opacity:.9; margin-top:8px; word-break:break-all}
+
+    .pill{display:inline-flex;align-items:center;gap:6px}
+    .dot{width:6px;height:6px;border-radius:999px;background:var(--accent);box-shadow:0 0 8px rgba(255,106,0,.5)}
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Validex Color Palettes</h1>
+      <div class="hint">Five tiles per row on desktop, vertical strips show each hex. Click copy to grab all six.</div>
+    </div>
+  </header>
+
+  <main class="grid" id="grid"></main>
+
+  <template id="cardTpl">
+    <article class="card">
+      <div class="swatch" title="">
+        <button class="copyBtn" aria-label="Copy hex codes">
+          <span class="pill"><span class="dot"></span><span class="copyText">Copy</span></span>
+        </button>
+      </div>
+      <div class="meta">
+        <h2 class="name"></h2>
+        <div class="tags"></div>
+        <div class="hexRow"></div>
+      </div>
+    </article>
+  </template>
+
+  <script>
+    const palettes = [
+      {id:1, name:"Sapphire + Lime Pop", tags:["AA","Dark","Accent: Lime"], colors:["#0B1833","#0A0D12","#253041","#D2D9E3","#F2F6FA","#A3E635"]},
+      {id:2, name:"Graphite + Electric Blue", tags:["AA","Dark","Accent: Electric Blue"], colors:["#0E121A","#090B10","#2A2F3A","#D1D6DE","#F5F7FA","#3B82F6"]},
+      {id:3, name:"Charcoal + Neon Cyan", tags:["AA","Dark","Accent: Cyan"], colors:["#0B1118","#07090D","#26303A","#CED6DF","#EFF3F7","#06B6D4"]},
+      {id:4, name:"Deep Teal + Coral", tags:["AA","Dark","Accent: Coral"], colors:["#052A2B","#071315","#22383C","#C8D8DA","#EBF5F6","#FF6F61"]},
+      {id:5, name:"Forest + Amber", tags:["AA","Dark","Accent: Amber"], colors:["#0C2218","#0A0F0C","#28352B","#CFD7D1","#F3F7F4","#FFB020"]},
+      {id:6, name:"Bordeaux + Gold", tags:["AA","Dark","Accent: Gold"], colors:["#2A0E1A","#0F0A0B","#3A2730","#D7CDD2","#F6F1F3","#E2B714"]},
+      {id:7, name:"Indigo + Mint", tags:["AA","Dark","Accent: Mint"], colors:["#101733","#0B0E14","#2B3247","#D3D7E3","#F3F6FA","#34D399"]},
+      {id:8, name:"Slate + Hot Pink", tags:["AA","Dark","Accent: Hot Pink"], colors:["#0E1522","#090C12","#283140","#CDD5DF","#F2F6FB","#EC4899"]},
+      {id:9, name:"Cocoa + Turquoise", tags:["AA","Dark","Accent: Turquoise"], colors:["#231713","#0E0B0A","#3A2C27","#D9D0CD","#F7F4F3","#2DD4BF"]},
+      {id:10, name:"Royal Blue + Orange", tags:["AA","Dark","Accent: Orange"], colors:["#0A1E46","#0A0E16","#2C354A","#D0D6E2","#F1F5FA","#FF6B00"]},
+      {id:11, name:"Plum + Sky", tags:["AA","Dark","Accent: Sky"], colors:["#1E1130","#0B0A0E","#332D44","#D8D3DD","#F7F5FA","#38BDF8"]},
+      {id:12, name:"Emerald + Peach", tags:["AA","Dark","Accent: Peach"], colors:["#0A241D","#0A0F0D","#263B33","#CBD7D3","#F1F7F5","#FF8E72"]},
+      {id:13, name:"Bronze + Ultramarine", tags:["AA","Dark","Accent: Ultramarine"], colors:["#231A0F","#0F0C08","#3A3126","#D7D0C7","#F7F4EF","#3C5DFF"]},
+      {id:14, name:"Charcoal + Lemon", tags:["AA","Dark","Accent: Lemon"], colors:["#0B0F14","#07090C","#28303A","#D0D6DE","#F4F7FA","#FDE047"]},
+      {id:15, name:"Ocean + Magenta", tags:["AA","Dark","Accent: Magenta"], colors:["#081E2F","#090E14","#253747","#CFE0EA","#F2F8FB","#D946EF"]},
+      {id:16, name:"Stone + Copper", tags:["AA","Dark","Accent: Copper"], colors:["#161A1E","#0B0D10","#2C3339","#D3D8DE","#F5F7FA","#FF7849"]},
+      {id:17, name:"Midnight + Red", tags:["AA","Dark","Accent: Red"], colors:["#0A1220","#090B10","#2A3240","#D2D7E0","#F3F6FA","#EF4444"]},
+      {id:18, name:"Pine + Fresh Green", tags:["AA","Dark","Accent: Green"], colors:["#0B1E18","#0A0F0D","#263530","#CBD6D2","#F1F7F5","#22C55E"]},
+      {id:19, name:"Navy + Violet", tags:["AA","Dark","Accent: Violet"], colors:["#0B1630","#090C12","#28314A","#D2D8E6","#F3F6FB","#8B5CF6"]},
+      {id:20, name:"Sandstone + Cobalt", tags:["AA","Dark","Accent: Cobalt"], colors:["#2A2116","#100E0B","#3A3226","#DCD5CB","#F7F4EF","#2563EB"]},
+    ];
+
+    const grid = document.getElementById('grid');
+    const tpl = document.getElementById('cardTpl');
+
+    function makeCard(p){
+      const node = tpl.content.cloneNode(true);
+      const card = node.querySelector('.card');
+      const swatch = node.querySelector('.swatch');
+      const metaName = node.querySelector('.name');
+      const metaTags = node.querySelector('.tags');
+      const hexRow = node.querySelector('.hexRow');
+      const btn = node.querySelector('.copyBtn');
+      const copyText = node.querySelector('.copyText');
+
+      // Build strips
+      p.colors.forEach(c => {
+        const d = document.createElement('div');
+        d.className = 'strip';
+        d.style.background = c;
+        swatch.appendChild(d);
+      });
+
+      const hexString = p.colors.join(', ');
+      swatch.title = hexString;
+      metaName.textContent = `${p.id}. ${p.name}`;
+      metaTags.textContent = p.tags.join(' • ');
+      hexRow.textContent = hexString;
+
+      btn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        try{
+          await navigator.clipboard.writeText(hexString);
+          copyText.textContent = 'Copied';
+          btn.style.borderColor = 'rgba(255,255,255,0.5)';
+          setTimeout(()=>{copyText.textContent='Copy'; btn.style.borderColor='rgba(255,255,255,0.2)';}, 1300);
+        }catch(err){
+          copyText.textContent = 'Press ⌘/Ctrl+C';
+          setTimeout(()=>{copyText.textContent='Copy';}, 1500);
+        }
+      });
+
+      return node;
+    }
+
+    palettes.forEach(p => grid.appendChild(makeCard(p)));
+  </script>
+</body>
+</html>
